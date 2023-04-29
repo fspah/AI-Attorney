@@ -2,96 +2,64 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [pdfLink, setPdfLink] = useState('');
+  const [file, setFile] = useState(null);
   const [question, setQuestion] = useState('');
+  const [location, setLocation] = useState('');
   const [answer, setAnswer] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New state variable
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  }
+
+  const handleQuestionChange = (event) => {
+    setQuestion(event.target.value);
+  }
+
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
+  }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
+    setIsLoading(true); // Set loading to true when starting the request
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('question', question);
+    formData.append('location', location);
     try {
-      const response = await axios.post('http://localhost:5000/process-pdf', {
-        pdfLink,
-        question,
-      });
+      const response = await axios.post('http://localhost:5000/process-pdf', formData);
       setAnswer(response.data.answer);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false); // Set loading to false after the request is finished
     }
-    setLoading(false);
-  };
-
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    backgroundColor: '#F3F3F3',
-    fontFamily: 'Arial, sans-serif',
-  };
-
-  const formStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    marginBottom: '20px',
-  };
-
-  const inputStyle = {
-    padding: '10px',
-    fontSize: '16px',
-  };
-
-  const buttonStyle = {
-    padding: '10px 20px',
-    fontSize: '16px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    cursor: 'pointer',
-  };
-
-  const answerStyle = {
-    color: '#333',
-    fontSize: '24px',
-  };
-
-  const titleStyle = {
-    color: '#333',
-    textAlign: 'center',
-    margin: '20px 0'
-  };
+  }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={titleStyle}>OpenAI Document Processor</h1>
-      <form style={formStyle} onSubmit={handleFormSubmit}>
+    <div className="App" style={{ padding: '10px', fontFamily: 'Arial' }}>
+      <h1 style={{ textAlign: 'center', color: '#444' }}>AI Attorney</h1>
+      <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px', margin: 'auto' }}>
         <label>
-          PDF Link:
-          <input
-            style={inputStyle}
-            type="text"
-            value={pdfLink}
-            onChange={(e) => setPdfLink(e.target.value)}
-          />
+          PDF (optional):
+          <input type="file" onChange={handleFileChange} style={{ margin: '10px 0' }} />
         </label>
         <label>
-          Question:
-          <input
-            style={inputStyle}
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
+        Question:
+          <input type="text" value={question} onChange={handleQuestionChange} required style={{ margin: '10px 0', padding: '5px' }} />
         </label>
-        <button style={buttonStyle} type="submit">Submit</button>
-        {loading && <p>This may take several minutes depending on the size of the document...</p>}
+        <label>
+          Location:
+          <input type="text" value={location} onChange={handleLocationChange} required style={{ margin: '10px 0', padding: '5px' }} />
+        </label>
+        <input type="submit" value="Submit" style={{ margin: '20px 0', padding: '10px', background: '#007BFF', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }} />
       </form>
-      <h1 style={answerStyle}>Answer: {answer}</h1>
+      {isLoading && file && <p style={{ textAlign: 'center', marginTop: '10px', color: '#999' }}>Processing... This may take several minutes depending on the document size.</p>}
+      {answer && <p style={{ marginTop: '20px', border: '1px solid #ddd', padding: '10px', borderRadius: '5px' }}>Answer: {answer}</p>}
     </div>
   );
 }
 
 export default App;
+
