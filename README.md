@@ -1,4 +1,4 @@
-AI-Attprney
+AI-Attorney
 
 Insert a link of a PDF document (optional), ask a legal question and provide a location which your question is related to. The program will create a great prompt and return you and excellent response.
 
