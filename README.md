@@ -1,6 +1,6 @@
 # AI-Attorney
 
-Insert a link of a PDF document (optional), ask a legal question and provide a location which your question is related to. The program will create a great prompt and return you an excellent response.
+Insert a link of a PDF document (optional), ask a legal question and provide a location which your question is related to. The program will create a great prompt and return you an excellent response. If you provide a document, the AI will search and query that document, if not it will guery the OpenAI database.
 
 
 GETTING STARTED
@@ -34,6 +34,9 @@ npm install
 
 npm start
 
+Set up  a .env file with you API keys. Look at the .env.example file for an example.
+
 The application should now be running on localhost:3000, and the server on localhost:5000.
+
     
 # AI-Attorney
