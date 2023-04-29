@@ -34,6 +34,6 @@ npm install
 
 npm start
 
-The application should now be running on localhost:3001, and the server on localhost:5001.
+The application should now be running on localhost:3000, and the server on localhost:5000.
     
 # AI-Attorney
