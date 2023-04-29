@@ -18,7 +18,7 @@ bash
 
 git clone https://github.com/fspah/AI-Attorney.git
 
-cd AI-attorney
+cd AI-Attorney
 
 pip install -r requirements.txt
 
