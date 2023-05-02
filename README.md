@@ -22,7 +22,7 @@ cd AI-Attorney
 
 RUN it with:
 
-docker-compose up --build 
+sudo docker-compose up --build 
 
 Open [http://localhost:3000]
 
