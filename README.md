@@ -24,5 +24,7 @@ RUN it with:
 
 docker-compose up --build 
 
+Open [http://localhost:3000]
+
     
 # AI-Attorney
