@@ -21,6 +21,7 @@ git clone https://github.com/fspah/AI-Attorney.git
 cd AI-Attorney
 
 RUN it with:
+
 docker-compose up --build 
 
     
