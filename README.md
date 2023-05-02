@@ -20,23 +20,7 @@ git clone https://github.com/fspah/AI-Attorney.git
 
 cd AI-Attorney
 
-pip install -r requirements.txt
-
-python server.py
-
-Setting up the React App
-
-bash - new terminal
-
-cd my-App
-
-npm install
-
-npm start
-
-Set up  a .env file with you API keys. Look at the .env.example file for an example.
-
-The application should now be running on localhost:3000, and the server on localhost:5000.
+docker-compose up --build 
 
     
 # AI-Attorney
