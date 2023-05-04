@@ -20,7 +20,7 @@ git clone https://github.com/fspah/AI-Attorney.git
 
 cd AI-Attorney
 
-create an env and add your API keys: openai api key, pinecone api key and oinecone api env.
+create an env and add your API keys: openai api key, pinecone api key and pinecone api env.
 
 RUN it with:
 
