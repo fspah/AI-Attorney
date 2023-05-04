@@ -7,8 +7,11 @@
   "name": "attorney-project",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  },
   "scripts": {
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && python3 app.py\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
