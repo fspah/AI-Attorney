@@ -49,7 +49,7 @@ def process_document_and_query(file, question, prompt):
 
 def answer_question_without_file(prompt):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}
