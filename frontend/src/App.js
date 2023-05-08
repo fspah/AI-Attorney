@@ -24,7 +24,9 @@ function App() {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData();
-    formData.append('file', file);
+    if (file) {
+      formData.append('file', file);
+    }
     formData.append('question', question);
     formData.append('location', location);
     try {

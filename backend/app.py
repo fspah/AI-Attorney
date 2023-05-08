@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from fastapi import FastAPI, File, Form, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 import os
 import openai
@@ -10,16 +11,24 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
 from langchain.chains.question_answering import load_qa_chain
 import pinecone
-from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
 load_dotenv()
-app = Flask(__name__)
-CORS(app)
+app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 PINECONE_API_ENV = os.getenv('PINECONE_API_ENV')
+
+openai.api_key = OPENAI_API_KEY
+
 
 pinecone.init(
     api_key=PINECONE_API_KEY,
@@ -61,11 +70,10 @@ def answer_question_without_file(prompt):
     return answer
 
 
-@app.route('/process-pdf', methods=['POST'])
-def process_pdf():
-    file = request.files.get('file')
-    question = request.form.get('question', '')
-    location = request.form.get('location', '')
+@app.post('/process-pdf')
+async def process_pdf(file: UploadFile = File(None),
+                      question: str = Form(...),
+                      location: str = Form(...)):
     prompt = (
         "You are an expert attorney. "
         "Give your advice on the following question: "
@@ -76,16 +84,15 @@ def process_pdf():
     print(prompt)
 
     if file and file.filename != '':
-        filename = secure_filename(file.filename)
-        file.save(os.path.join("/tmp", filename))
+        with open(os.path.join("/tmp", file.filename), "wb") as buffer:
+            buffer.write(await file.read())
         answer = process_document_and_query(
-            os.path.join("/tmp", filename), question, prompt)
+            os.path.join("/tmp", file.filename), question, prompt)
     else:
         answer = answer_question_without_file(prompt)
 
-    return jsonify({'answer': answer})
-
+    return JSONResponse(content={'answer': answer})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=5000)
