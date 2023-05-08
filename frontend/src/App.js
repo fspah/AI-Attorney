@@ -30,7 +30,7 @@ function App() {
     formData.append('question', question);
     formData.append('location', location);
     try {
-      const response = await axios.post('http://localhost:5000/process-pdf', formData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/process-pdf`, formData);
       setAnswer(response.data.answer);
     } catch (error) {
       // console.error(error);
