@@ -1,49 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField, Button, CircularProgress, Typography, Box, Grid, Card, CardContent,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-
-function ChatMessage({ message }) {
-  const isUser = message.role === 'user';
-  const messageClass = isUser ? 'chat-message-user' : 'chat-message-assistant';
-
-  return (
-    <div className={`chat-message ${messageClass}`}>
-      {message.content}
-    </div>
-  );
-}
-ChatMessage.propTypes = {
-  message: PropTypes.shape({
-    role: PropTypes.string,
-    content: PropTypes.string,
-  }).isRequired,
-};
-
-function ChatInput({
-  onMessageChange, message, isSending, onFormSubmit,
-}) {
-  return (
-    <form className="chat-input-form" onSubmit={onFormSubmit}>
-      <input className="chat-input" type="text" value={message} onChange={onMessageChange} required style={{ fontSize: '18px' }} />
-      <button type="submit" className="chat-submit" disabled={isSending}>
-        {isSending ? 'Send' : 'Send'}
-      </button>
-    </form>
-  );
-}
-
-ChatInput.propTypes = {
-  onMessageChange: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
-  isSending: PropTypes.bool.isRequired,
-  onFormSubmit: PropTypes.func.isRequired,
-};
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
